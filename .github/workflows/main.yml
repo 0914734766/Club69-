@@ -1,0 +1,89 @@
+name: main
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm ls
+      - run: ./node_modules/.bin/eslint ./
+      - run: ./node_modules/.bin/stylelint ./**/*.css ./**/*.html ./**/*.js
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sed -i 's|^url: https://rspamd.com.*||' _config.yml
+      - uses: actions/configure-pages@v5
+      - uses: actions/cache@v4
+        with:
+          path: |
+            _site-root/
+            _site/
+          key: run_id-${{ github.run_id }}
+      - uses: actions/jekyll-build-pages@v1
+      - uses: actions/upload-pages-artifact@v3
+      - run: |
+          mkdir -p _site-root
+          ln -s ../_site/ _site-root/${{ github.event.repository.name }}
+
+  deploy:
+    if: github.repository != 'rspamd/rspamd.com'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  check-broken-links:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/cache@v4
+        with:
+          path: |
+            _site-root/
+            _site/
+          key: run_id-${{ github.run_id }}
+      - uses: ruzickap/action-my-broken-link-checker@v2
+        with:
+          url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          pages_path: ./_site-root/
+          cmd_params: >
+            --buffer-size=8192 --color=always --skip-tls-verification
+            --max-connections-per-host=10
+            --header="User-Agent:curl/8.8.0"
+            --exclude="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/(doc/lua/((lua|rspamd)_.+|ucl)[.]html(#.+)?|.*#top)$"
+            --exclude="^https://github[.]com/rspamd/rspamd[.]com/edit/master/"
+            --exclude="^http://wiki[.]luajit[.]org/New-Garbage-Collector#gc-algorithms_generational-gc$"
+            --exclude="^https://01[.]org/hyperscan/$"
+            --exclude="^https://oem[.]avira[.]com/"
+            --exclude="^https://phishtank[.]com$"
+            --exclude="^https://spameatingmonkey[.]com/faq#query-limits$"
+            --exclude="^https://upcloud[.]com/"
+            --exclude="^https://www[.]clamav[.]net$"
+            --exclude="^https://www[.]hyperscan[.]io/?$"
+            --exclude="^https://www[.]reddit[.]com/"
+            --exclude="^https://www[.]uceprotect[.]net/"
+            --exclude="^https://trec[.]nist[.]gov/"
