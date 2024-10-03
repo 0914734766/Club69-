@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ page.title }}</title>
+
+    <!-- Bootswatch theme for Bootstrap -->
+    <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
+    <!-- for glyphicons -->
+    <link href="{{ site.baseurl }}/css/bootstrap-social.css" rel="stylesheet">
+
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/solid.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/regular.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/brands.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/fontawesome.min.js"></script>
+
+    <!-- Ubuntu fonts from google -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="{{ site.baseurl }}/js/lib/TypeHelpers.min.js"></script>
+    <!-- Algolia search begin -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.20.0/dist/algoliasearch-lite.umd.js" integrity="sha256-DABVk+hYj0mdUzo+7ViJC6cwLahQIejFvC+my2M/wfM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.60.0/dist/instantsearch.production.min.js" integrity="sha256-9242vN47QUX50UG5Gf5XDO1YREWCEJRyXHofh5fsl24=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">
+    <!-- Algolia search end -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
+    <link rel="icon" href="{{ site.baseurl }}/favicon.png?v=2" type="image/png"/>
+    <link rel="alternate" type="application/rss+xml" title="Rspamd news" href="{{ site.baseurl }}/feed.xml">
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-5492966-5', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="module" src="{{ site.baseurl }}/js/search.js"></script>
+    {% seo %}
+</head>
+
+<body class="d-flex flex-column h-100" data-bs-spy="scroll" data-bs-target="#navbar-spy">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-xl bg-primary fixed-top py-0" role="navigation">
+        <div class="r-nav-container container-fluid">
+                <a class="navbar-brand d-flex align-items-center justify-content-center m-0 px-0 py-1" href="{{ site.baseurl }}/">
+                    <img class="h-100" src="{{ site.baseurl }}/img/rspamd_logo_navbar.png">
+                </a>
+                <form class="ais-InstantSearch px-3">
+                    <div id="searchbox"></div>
+                </form>
+                <!--toggle button for xs-size-->
+                <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <div id="navbar" class="navbar-collapse collapse navbar-nav-scroll">
+                <ul class="nav navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/downloads.html">Downloads&nbsp;<i class="fa-solid fa-lg fa-download"></i></a>
+                    </li>
+                    <li class="nav-item dropdown position-static">
+                        <a href="#" class="nav-link d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
+                           <span class="caret"></span></a>
+                        <ul class="dropdown-menu w-100 mt-0 p-4 border-top rounded-0">
+                            <li class="d-table-row">
+                                <a class="dropdown-item text-nowrap fw-bold px-3" href="{{ site.baseurl }}/doc/index.html">
+                                    Documentation index <small><i class="fa-solid fa-chevron-right"></i></small>
+                                </a>
+                            </li>
+                            <li>Installation and Administration
+                              <ul>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/quickstart.html">Quick start</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/faq.html">FAQ</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/integration.html">MTA integration</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/migration.html">Upgrading notes</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/webui/">Rspamd WebUI</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/other/gtube_patterns.html">GTUBE-like test patterns</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to rspamd.com website</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/redis.html">Using Redis in Rspamd</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect Redis</a></li>
+                              </ul>
+                            </li>
+                            <li>Configuration guide
+                              <ul>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/">Configuration structure <small><i class="fa-solid fa-chevron-right"></i></small></a>
+                                  <ul style="padding-left: 30px; list-style-type: circle;">
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/settings.html">Users settings description</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/options.html">Top-level options</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/metrics.html">Metrics, actions and symbols</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/statistic.html">Statistical module</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/selectors.html">Using selectors</a></li>
+                                  </ul>
+                                </li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/modules/">Modules documentation</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/workers/">Workers documentation</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/other/rspamadm.html">Rspamadm utilities</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/other/usage_policy.html">Rspamd data usage policies</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams article</a></li>
+                              </ul>
+                            </li>
+                            <li>Developers documentation
+                              <ul>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/lua/">Lua API reference</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/developers/examples.html">Lua rules examples</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/developers/writing_rules.html">Writing Rspamd rules</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/fuzzy_storage.html">Creating your fuzzy storage</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/developers/architecture.html">Architecture information</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/developers/protocol.html">Protocol documentation</a></li>
+                              </ul>
+                            </li>
+                            <li>External resources
+                              <ul>
+                                <li><a class="dropdown-item" href="https://thomas-leister.de/en/mailserver-debian-stretch/">Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian Stretch</a></li>
+                                <li><a class="dropdown-item" href="https://www.c0ffee.net/blog/mail-server-guide">Mail self-hosting on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP</a></li>
+                                <li><a class="dropdown-item" href="http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/">An alternative introduction to rspamd configuration</a></li>
+                              </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/blog/">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/doc/other/usage_policy.html">Usage policies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/commercial.html">Commercial support</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/support.html">Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="https://bl.rspamd.com/" target="_blank">List removal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa-brands fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
+                            target="_blank" data-bs-toggle="tooltip" data-bs-title="Edit the current page and create a pull request on GitHub">
+                            <i class="fa-solid fa-lg fa-pencil"></i>&nbsp;Edit</a>
+                    </li>
+                    <li class="nav-item">
+{% include paypal-form.html
+    form-class="donate nav-link d-flex align-items-center pe-1"
+    button-class="btn btn-primary"
+    button-text="Donate" %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="flex-shrink-0">
+        <nav class="jumbotron fixed-top ais-hits">
+            <div class="ais-InstantSearch">
+                <div id="pagination"></div>
+                <div id="hits"></div>
+            </div>
+        </nav>
